@@ -1,0 +1,78 @@
+.game-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.player-info {
+  text-align: center;
+  flex: 1;
+}
+
+.player-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.player-category {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-transform: capitalize;
+  color: white;
+}
+
+.player-emojis {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 8px;
+  font-size: 1.5rem;
+}
+
+.turn-indicator {
+  text-align: center;
+  flex: 1;
+  padding: 0 20px;
+}
+
+.current-turn {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.next-emoji {
+  font-size: 2rem;
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+.active-player {
+  background: rgba(255,215,0,0.2);
+  border: 2px solid rgba(255,215,0,0.5);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .game-info {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .turn-indicator {
+    padding: 0;
+  }
+}
