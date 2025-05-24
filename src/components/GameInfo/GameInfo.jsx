@@ -4,7 +4,8 @@ import './GameInfo.css';
 const GameInfo = ({ currentPlayer, players, nextEmoji }) => {
   return (
     <div className="game-info">
-      {[1, 2].map(playerNum => (
+      <div className="player-info-container">
+        {[1, 2].map(playerNum => (
         <div 
           key={playerNum}
           className={`player-info ${currentPlayer === playerNum ? 'active-player' : ''}`}
@@ -18,6 +19,7 @@ const GameInfo = ({ currentPlayer, players, nextEmoji }) => {
           </div>
         </div>
       ))}
+      </div>
       <div className="turn-indicator">
         <div className="current-turn">Player {currentPlayer}'s Turn</div>
         <div className="next-emoji">{nextEmoji}</div>

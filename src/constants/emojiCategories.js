@@ -3,7 +3,8 @@ export const EMOJI_CATEGORIES = {
   food: ['🍕', '🍟', '🍔', '🍩', '🌮', '🍎'],
   sports: ['⚽️', '🏀', '🏈', '🎾', '🏐', '🏓'],
   space: ['🚀', '🌟', '🛸', '🌙', '⭐', '🪐'],
-  nature: ['🌸', '🌺', '🌻', '🌹', '🌷', '🌾']
+  nature: ['🌸', '🌺', '🌻', '🌹', '🌷', '🌾'],
+  faces: ['😀', '😂', '😎', '😍', '😡', '😭']
 };
 
 export const WINNING_LINES = [

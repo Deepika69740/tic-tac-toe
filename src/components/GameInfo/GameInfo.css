@@ -8,7 +8,12 @@
   margin-bottom: 20px;
   backdrop-filter: blur(10px);
 }
-
+.player-info-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 50px;
+}
 .player-info {
   text-align: center;
   flex: 1;

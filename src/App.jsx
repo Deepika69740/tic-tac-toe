@@ -154,7 +154,8 @@ const App = () => {
   }, [currentPlayer, players, gameStarted]);
 
   return (
-    <div className="game-container">
+    <div className="app">
+      <div className="game-container">
       <h1 className="game-title">🎮 Twisted Tic Tac Toe</h1>
       
       {!gameStarted ? (
@@ -186,12 +187,14 @@ const App = () => {
         <WinnerModal 
           winner={winner}
           onPlayAgain={playAgain}
+          onReset={resetGame}
         />
       )}
 
       {showHelp && (
         <HelpModal onClose={() => setShowHelp(false)} />
       )}
+    </div>
     </div>
   );
 };
