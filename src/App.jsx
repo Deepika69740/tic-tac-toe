@@ -25,10 +25,13 @@ const App = () => {
   const [winningCells, setWinningCells] = useState([]);
   const [showHelp, setShowHelp] = useState(false);
   const [nextEmoji, setNextEmoji] = useState('');
+  const [usedEmojis, setUsedEmojis] = useState([]);
 
   const getRandomEmoji = (category) => {
     const emojis = EMOJI_CATEGORIES[category];
-    return emojis[Math.floor(Math.random() * emojis.length)];
+    const availableEmojis = emojis.filter(emoji => !usedEmojis.includes(emoji));
+    if (availableEmojis.length === 0) return null;
+    return availableEmojis[Math.floor(Math.random() * availableEmojis.length)];
   };
 
   const checkWinner = (newBoard) => {
@@ -37,11 +40,11 @@ const App = () => {
       if (newBoard[a] && newBoard[b] && newBoard[c]) {
         const player1Emojis = EMOJI_CATEGORIES[players.player1] || [];
         const player2Emojis = EMOJI_CATEGORIES[players.player2] || [];
-        
-        const isPlayer1Line = [newBoard[a], newBoard[b], newBoard[c]].every(emoji => 
+
+        const isPlayer1Line = [newBoard[a], newBoard[b], newBoard[c]].every(emoji =>
           player1Emojis.includes(emoji)
         );
-        const isPlayer2Line = [newBoard[a], newBoard[b], newBoard[c]].every(emoji => 
+        const isPlayer2Line = [newBoard[a], newBoard[b], newBoard[c]].every(emoji =>
           player2Emojis.includes(emoji)
         );
 
@@ -68,14 +71,14 @@ const App = () => {
       player1History: [],
       player2History: []
     });
+    setUsedEmojis([]);
     setNextEmoji(getRandomEmoji(selectedCategories.player1));
   };
 
   const handleCellClick = (index) => {
-    if (board[index] || winner) return;
+    if (board[index] || winner || !nextEmoji) return;
 
     const newBoard = [...board];
-    const currentCategory = players[`player${currentPlayer}`];
     const emoji = nextEmoji;
     const currentPlayerEmojis = [...players[`player${currentPlayer}Emojis`]];
     const currentPlayerHistory = [...players[`player${currentPlayer}History`]];
@@ -85,7 +88,7 @@ const App = () => {
       newBoard[oldestPosition] = null;
       currentPlayerHistory.shift();
       currentPlayerEmojis.shift();
-      
+
       if (index === oldestPosition) {
         alert("You cannot place your emoji where your oldest emoji was!");
         return;
@@ -102,6 +105,7 @@ const App = () => {
       [`player${currentPlayer}Emojis`]: currentPlayerEmojis,
       [`player${currentPlayer}History`]: currentPlayerHistory
     }));
+    setUsedEmojis(prev => [...prev, emoji]);
 
     const gameWinner = checkWinner(newBoard);
     if (gameWinner) {
@@ -130,6 +134,7 @@ const App = () => {
     setWinningCells([]);
     setSelectedCategories({ player1: '', player2: '' });
     setNextEmoji('');
+    setUsedEmojis([]);
   };
 
   const playAgain = () => {
@@ -144,57 +149,59 @@ const App = () => {
     }));
     setWinner(null);
     setWinningCells([]);
+    setUsedEmojis([]);
     setNextEmoji(getRandomEmoji(players.player1));
   };
 
   useEffect(() => {
     if (gameStarted && players[`player${currentPlayer}`]) {
-      setNextEmoji(getRandomEmoji(players[`player${currentPlayer}`]));
+      const newEmoji = getRandomEmoji(players[`player${currentPlayer}`]);
+      setNextEmoji(newEmoji);
     }
   }, [currentPlayer, players, gameStarted]);
 
   return (
     <div className="app">
       <div className="game-container">
-      <h1 className="game-title">🎮 Twisted Tic Tac Toe</h1>
-      
-      {!gameStarted ? (
-        <CategorySelector 
-          onStart={startGame}
-          selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
-        />
-      ) : (
-        <>
-          <GameInfo 
-            currentPlayer={currentPlayer}
-            players={players}
-            nextEmoji={nextEmoji}
+        <h1 className="game-title">🎮 Twisted Tic Tac Toe</h1>
+
+        {!gameStarted ? (
+          <CategorySelector
+            onStart={startGame}
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
           />
-          <GameBoard 
-            board={board}
-            onCellClick={handleCellClick}
-            winningCells={winningCells}
-          />
-          <GameControls 
+        ) : (
+          <>
+            <GameInfo
+              currentPlayer={currentPlayer}
+              players={players}
+              nextEmoji={nextEmoji}
+            />
+            <GameBoard
+              board={board}
+              onCellClick={handleCellClick}
+              winningCells={winningCells}
+            />
+            <GameControls
+              onReset={resetGame}
+              onHelp={() => setShowHelp(true)}
+            />
+          </>
+        )}
+
+        {winner && (
+          <WinnerModal
+            winner={winner}
+            onPlayAgain={playAgain}
             onReset={resetGame}
-            onHelp={() => setShowHelp(true)}
           />
-        </>
-      )}
+        )}
 
-      {winner && (
-        <WinnerModal 
-          winner={winner}
-          onPlayAgain={playAgain}
-          onReset={resetGame}
-        />
-      )}
-
-      {showHelp && (
-        <HelpModal onClose={() => setShowHelp(false)} />
-      )}
-    </div>
+        {showHelp && (
+          <HelpModal onClose={() => setShowHelp(false)} />
+        )}
+      </div>
     </div>
   );
 };

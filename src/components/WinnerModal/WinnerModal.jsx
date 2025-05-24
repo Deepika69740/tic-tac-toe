@@ -10,7 +10,7 @@ const WinnerModal = ({ winner, onPlayAgain,onReset }) => {
         <button className="play-again-button" onClick={onPlayAgain}>
           Play Again
         </button>
-        <button className="control-button reset-button" onClick={onReset}>
+        <button className="control-button reset-button new-game-button" onClick={onReset}>
         New Game
       </button>
       </div>
